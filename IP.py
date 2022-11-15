@@ -12,3 +12,8 @@ class IP:
             self.redeIPInBinaryStr += bin(int(ip)).replace("0b", "").zfill(8)
         self.redeIPInBinaryStr = self.ipInBinary[:self.maskInt]
 
+        def __eq__(self, other):
+            if not isinstance(other, IP):
+                return False
+
+            return self.ipStr == other.ipStr

@@ -5,11 +5,8 @@ from ARP import ARPReply
 from ARP import ARPRequest
 from Rede import Rede
 
-n2 = Node()
-n1.executaProtocoloDeRede(ARPRequest( n2 ,n1.ip))
-
 class Nodo:
-    arpTable = {}
+
     rede = Rede()
 
     def __init__(self, name: str, ip: IP, mac: MAC, gateway: IP):
@@ -17,14 +14,25 @@ class Nodo:
         self.ip = ip
         self.mac = mac
         self.gateway = gateway
+        self.arpTable = {}
+        
 
-    def protocoloDeRede(self, protocol):
+    def protocoloDeRede(self, protocol): # recebendo da rede
         if isinstance(protocol, ARPReply): 
-            ARPReply(protocol)
+            self.ARPReplyReceive(protocol)
         elif isinstance(protocol, ARPRequest): 
-            ARPRequest(protocol)
+            self.ARPRequestReceive(protocol)
 
-    def ARPReply(arpReply: ARPReply):
-        return
-    def ARPRequest(arpRequest: ARPRequest):
-        return
+    def ARPReplyReceive(self, arpReply: ARPReply):
+        if arpReply.tell == self.ip:
+            self.arpTable[arpReply.who] = arpReply.mac
+        
+    def ARPRequestReceive(self, arpRequest: ARPRequest): #esse nodo RECEBEU DA REDE um ARPRequest
+
+        if arpRequest.who.ipStr == self.ip: # if its me then send arp reply
+            # save his mac on arpTable
+            self.arpTable[arpRequest.tell] = arpRequest.tellersMac
+            # send reply
+            arpReply = ARPReply(arpRequest.who, arpRequest.tell, self.mac)
+            Nodo.rede.enviaNaRede(arpReply)
+
