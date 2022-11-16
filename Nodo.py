@@ -3,9 +3,10 @@ from IP import IP
 from MAC import MAC
 from ARP import ARPReply
 from ARP import ARPRequest
+from NetworkEntityAbstraction import NetworkEntity
 import Rede
 
-class Nodo:
+class Nodo(NetworkEntity):
 
     rede = Rede.redeGlobal
 
@@ -36,3 +37,8 @@ class Nodo:
             arpReply = ARPReply(arpRequest.who, arpRequest.tell, self.mac)
             Nodo.rede.enviaNaRede(arpReply)
 
+    def isMyIP(self, ip:IP) -> bool:
+        return self.ip == ip
+
+    def isMyMAC(self, mac:MAC) -> bool:
+        return self.mac == mac
