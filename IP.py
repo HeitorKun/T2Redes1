@@ -10,7 +10,7 @@ class IP:
         self.redeIPInBinaryStr = ""
         for ip in splitPointIPStr:
             self.redeIPInBinaryStr += bin(int(ip)).replace("0b", "").zfill(8)
-        self.redeIPInBinaryStr = self.ipInBinary[:self.maskInt]
+        self.redeIPInBinaryStr = self.redeIPInBinaryStr[:self.maskInt]
 
         def __eq__(self, other):
             if not isinstance(other, IP):

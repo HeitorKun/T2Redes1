@@ -3,7 +3,9 @@ from MAC import MAC
 from Nodo import Nodo
 from Router import Router
 from RouterTableInfo import RouterTableInfo
+import Rede
 class Reader:
+  rede = Rede.redeGlobal
   nodes = []
   routers = [] 
   def read(self, name):
@@ -31,18 +33,23 @@ class Reader:
 
             node = Nodo(name, ip, mac, gateway)
             self.nodes.append(node)
+            self.rede.adicionaNodo(node)
           elif format == 1:
             router = Router(x[0], x[1])
-            for portN in range(1, int(router.num_ports)+1):
+            for portN in range(1, int(router.numberOfPorts)+1):
               macN = 2 ** portN
               ipN = macN + 1
 
               ipStr = x[ipN][:-3]
+              ipMaskStr = x[ipN][-2:]
               macStr = x[macN]
               
-              router.addNewIPAndMac(ipStr, macStr)
+              auxIp = IP(ipStr, ipMaskStr)
+              auxMac = MAC(macStr)
+              router.addNewIPAndMac(auxIp, auxMac)
               
             self.routers.append(router)
+            self.rede.adicionaRouter(router)
           else:
             routerIp = x[1][:-3]
             routerPrefix = x[1][-2:]
