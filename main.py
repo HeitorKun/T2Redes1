@@ -8,17 +8,22 @@ from ARP import ARPReply
 reader = Reader()
 reader.read("topologia.txt")
 
-for node in reader.nodes:
-  print(node.name)
 
-for router in reader.routers:
-  print(router.name)
 
 src = reader.nodes[0]
 dst = reader.nodes[1]
 
+arprequest = ARPRequest(dst.ip, src.ip, src.mac)
+rede = reader.rede
+rede.ARPRequestReceive(arprequest)
+
+for node in reader.nodes:
+  print(node.name, node.arpTable)
+
+for router in reader.routers:
+  print(router.arpTable)
 # print(reader.rede.dicionarioDeRedes)
-for key in reader.rede.dicionarioDeRedes.keys():
-  print("key: ", key, reader.rede.dicionarioDeRedes[key])
+# for key in reader.rede.dicionarioDeRedes.keys():
+#   print("key: ", key, reader.rede.dicionarioDeRedes[key])
 # arpRequest = ARPRequest(src.ip, dst.ip, src.mac)
 # reader.nodes[0].arpRequest()

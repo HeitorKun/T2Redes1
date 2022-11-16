@@ -11,6 +11,7 @@ class Router(NetworkEntity):
         self.portsInUse = 0
         self.mask = 0
         self.ports = {}
+        self.arpTable = {}
         self.routerTableInfos = []
 
     def protocoloDeRede(self, protocol):
