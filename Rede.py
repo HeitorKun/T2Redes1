@@ -42,7 +42,23 @@ class Rede:
             for host in Rede[protocol.tell.redeIPInBinaryStr]:
                 host.protocoloDeRede(protocol)
     def ICMPEchoRequestReceive(self, icmpEchoRequest: ICMPEchoRequest) -> int:
-        print()
+        if icmpEchoRequest.ttl - 1 == 0:
+            return 99
+        else:
+            nodes = Rede.dicionarioDeRedes[icmpEchoRequest.nextNode.redeIPInBinaryStr]
+            for node in nodes:
+                if isinstance(node, Nodo.Nodo):
+                    ip = node.ip.ipStr
+                    if icmpEchoRequest.nextNode.ipStr == ip and icmpEchoRequest.dst.ipStr == ip:
+                        return 0
+                    if icmpEchoRequest.nextNode.ipStr == ip:
+                        
+                        return 1
+                elif isinstance(node, Router.Router):
+                    # print(node.ports, arpReply.who.ipStr)
+                    if arpReply.who.ipStr in node.ports:
+                        node.arpTable[arpReply.tell.ipStr] = arpReply.tellersMac
+        
     def ICMPEchoReplyReceive(self, icmpEchoReply: ICMPEchoReply) -> int:
         print()
 

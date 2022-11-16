@@ -6,20 +6,20 @@ from IP import IP
 from MAC import MAC
 
 class ICMPEchoRequest:
-    def __init__(self, currentNode: IP, nextNode: IP, tellersMac: MAC, src: IP, dst: IP, ttl: int):  
+    def __init__(self, currentNode: IP, nextNode: IP, nextNodeMac: MAC, src: IP, dst: IP, ttl: int):  
         self.currentNode: IP = currentNode 
         self.nextNode: IP = nextNode
-        self.tellersMac: MAC = tellersMac
+        self.nextNodeMac: MAC = nextNodeMac
         self.src = src
         self.dst = dst
         self.ttl = ttl
         
 
 class ICMPEchoReply:
-        def __init__(self, currentNode: IP, nextNode: IP, tellersMac: MAC, src: IP, dst: IP, ttl: int):  
+        def __init__(self, currentNode: IP, nextNode: IP, nextNodeMac: MAC, src: IP, dst: IP, ttl: int):  
             self.currentNode: IP = currentNode
             self.nextNode: IP = nextNode
-            self.tellersMac: MAC = tellersMac
+            self.nextNodeMac: MAC = nextNodeMac
             self.src = src
             self.dst = dst
             self.ttl = ttl

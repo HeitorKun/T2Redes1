@@ -17,19 +17,31 @@ if input[2] == "ping":
   dst = reader.nodes[3]
 
   go = True
-
+  current_node = src
+  next_node = dst
   while(go):
     rede = reader.rede
-    current_node = src
-    next_node = dst
+    
     #Se current_node tem mac do next_node, pode mandar ICMP request
     if next_node.ip.ipStr in current_node.arpTable:
+      ttl = 8
       icmpRequest = ICMPEchoRequest(current_node.ip, next_node.ip, current_node.mac, src.ip, dst.ip, ttl)
-      rede.ICMPEchoRequestReceive(icmpRequest)
+      if rede.ICMPEchoRequestReceive(icmpRequest) == 99:
+        print(" error time exceeded")
+        go = False
+      elif rede.ICMPEchoRequestReceive(icmpRequest) == 0:
+        print(" ping done")
+        go = False
+      else:
+        current_node = next_node
+        next_node = 
+        print(" deu certo")
       go = False
     #Se current_node tem mac do gateway(roteador) pode mandar ICMP request
     elif current_node.gateway.ipStr in current_node.arpTable:
-      icmpRequest = ICMPEchoRequest(current_node.ip, next_node.ip, current_node.mac)
+      icmpRequest = ICMPEchoRequest(current_node.ip, next_node.ip, current_node.mac, src.ip, dst.ip, 1)
+      if rede.ICMPEchoRequestReceive(icmpRequest) == 99:
+        print(" error time exceeded")
       go = False
     #Se current_node nao tem mac do next_node ainda, tem que mandar ARP request
     else:
@@ -45,14 +57,7 @@ if input[2] == "ping":
         arprequest = ARPRequest(next_node.ip, current_node.ip, current_node.mac)
         rede = reader.rede
         rede.ARPRequestReceive(arprequest)
-
-    # for node in reader.nodes:
-        #   print(node.name, node.arpTable)
-
-        # for router in reader.routers:
-        #   print(router.name, router.arpTable)
-        print(src.arpTable)
-
+        
 elif input[2] == "traceroute":
   print("traceroute execution")
 else:
