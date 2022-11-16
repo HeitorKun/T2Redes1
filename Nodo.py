@@ -37,8 +37,8 @@ class Nodo(NetworkEntity):
             arpReply = ARPReply(arpRequest.who, arpRequest.tell, self.mac)
             Nodo.rede.enviaNaRede(arpReply)
 
-    def isMyIP(self, ip:IP.IP) -> bool:
+    def isMyIP(self, ip:IP) -> bool:
         return self.ip == ip
 
-    def isMyMAC(self, mac:MAC.MAC) -> bool:
+    def isMyMAC(self, mac:MAC) -> bool:
         return self.mac == mac

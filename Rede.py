@@ -1,5 +1,5 @@
-from ARP import ARPReply
-from ARP import ARPRequest
+from ARP import *
+from ARP import *
 import Nodo
 import Router
 

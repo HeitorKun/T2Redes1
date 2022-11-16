@@ -1,5 +1,5 @@
-from IP import IP
-from MAC import MAC
+from IP import *
+from MAC import *
 
 class ARPRequest:
     def __init__(self, who: IP, tell: IP, tellersMac: MAC):  
