@@ -20,28 +20,6 @@ class Nodo(NetworkEntity):
         elif isinstance(protocol, ARPRequest): 
             self.ARPRequestReceive(protocol)
 
-    def ARPReplyReceive(self, arpReply: ARPReply):
-        if arpReply.tell == self.ip:
-            self.arpTable[arpReply.who] = arpReply.mac
-    
-    def ARPRequestSend(self, arpRequest: ARPRequest): 
-
-        if arpRequest.who.ipStr == self.ip: # if its me then send arp reply
-            # save his mac on arpTable
-            self.arpTable[arpRequest.tell] = arpRequest.tellersMac
-            # send reply
-            arpReply = ARPReply(arpRequest.who, arpRequest.tell, self.mac)
-            Nodo.rede.enviaNaRede(arpReply)
-
-    def ARPRequestReceive(self, arpRequest: ARPRequest): #esse nodo RECEBEU DA REDE um ARPRequest
-
-        if arpRequest.who.ipStr == self.ip: # if its me then send arp reply
-            # save his mac on arpTable
-            self.arpTable[arpRequest.tell] = arpRequest.tellersMac
-            # send reply
-            arpReply = ARPReply(arpRequest.who, arpRequest.tell, self.mac)
-            Nodo.rede.enviaNaRede(arpReply)
-
     def isMyIP(self, ip:IP.IP) -> bool:
         return self.ip == ip
 
