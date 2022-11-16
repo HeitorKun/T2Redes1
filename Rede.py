@@ -22,3 +22,6 @@ class Rede:
         elif isinstance(protocol, ARPRequest):
             for host in Rede[protocol.tell.redeIPInBinaryStr]:
                 host.protocoloDeRede(protocol)
+
+
+redeGlobal = Rede()

@@ -3,11 +3,11 @@ from IP import IP
 from MAC import MAC
 from ARP import ARPReply
 from ARP import ARPRequest
-from Rede import Rede
+import Rede
 
 class Nodo:
 
-    rede = Rede()
+    rede = Rede.redeGlobal
 
     def __init__(self, name: str, ip: IP, mac: MAC, gateway: IP):
         self.name = name
