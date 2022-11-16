@@ -5,6 +5,8 @@ class MAC:
 
     def __eq__(self, other):
         if not isinstance(other, MAC):
+       
+       
             return False
 
         return self.macStr == other.macStr

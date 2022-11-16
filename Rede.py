@@ -1,22 +1,20 @@
 from ARP import ARPReply
 from ARP import ARPRequest
-from IP import IP
-from MAC import MAC
-from Nodo import Nodo
-from Router import Router
+import Nodo
+import Router
 
 class Rede:
     dicionarioDeRedes = {}
     def __init__(self):
         pass
     
-    def adicionaNodo(self, nodo: Nodo):
+    def adicionaNodo(self, nodo: Nodo.Nodo):
         if nodo.ip.redeIPInBinaryStr in Rede.dicionarioDeRedes:
             Rede.dicionarioDeRedes[nodo.ip.redeIPInBinaryStr].append(nodo)
         else:
             Rede.dicionarioDeRedes[nodo.ip.redeIPInBinaryStr] = [nodo]
 
-    def adicionaRouter(self, router: Router):
+    def adicionaRouter(self, router: Router.Router):
         if router.ip.redeIPInBinaryStr in Rede.dicionarioDeRedes:
             Rede.dicionarioDeRedes[router.ip.redeIPInBinaryStr].append(router)
         else:

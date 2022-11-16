@@ -1,5 +1,5 @@
-from IP import IP
-from MAC import MAC
+import IP
+import MAC
 from NetworkEntityAbstraction import NetworkEntity
 from RouterTableInfo import RouterTableInfo
 import Rede
@@ -18,7 +18,7 @@ class Router(NetworkEntity):
     def protocoloDeRede(self, protocol):
         return
 
-    def addNewIPAndMac(self, ip: IP, mac: MAC):
+    def addNewIPAndMac(self, ip: IP.IP, mac: MAC.MAC):
         if self.portsInUse < self.numberOfPorts:
             self.ports[ip.ipStr] = mac
             self.portsInUse += 1
@@ -29,14 +29,14 @@ class Router(NetworkEntity):
     def updateNewRouterTable(self, rT: RouterTableInfo):
         self.routerTableInfos.append(rT)
 
-    def isMyIP(self, ip:IP) -> bool:
+    def isMyIP(self, ip:IP.IP) -> bool:
         for thisIp in self.ports: 
             if thisIp == ip.ipStr:
                 return True
 
         return False
 
-    def isMyMAC(self, mac:MAC) -> bool:
+    def isMyMAC(self, mac:MAC.MAC) -> bool:
         for thisMac in self.ports.values(): 
             if thisMac == mac.macStr:
                 return True
