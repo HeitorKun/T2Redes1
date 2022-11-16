@@ -1,7 +1,6 @@
 from IP import IP
 from MAC import MAC
-from Nodo import Nodo
-from Router import Router
+from NetworkEntities import *
 from RouterTableInfo import RouterTableInfo
 class Reader:
   nodes = []
