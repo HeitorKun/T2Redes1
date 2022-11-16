@@ -1,5 +1,7 @@
 from ARP import ARPReply
 from ARP import ARPRequest
+from ICMP import ICMPEchoRequest
+from ICMP import ICMPEchoReply
 import Nodo
 import Router
 from IP import IP
@@ -39,10 +41,17 @@ class Rede:
         elif isinstance(protocol, ARPRequest):
             for host in Rede[protocol.tell.redeIPInBinaryStr]:
                 host.protocoloDeRede(protocol)
+    def ICMPEchoRequestReceive(self, icmpEchoRequest: ICMPEchoRequest) -> int:
+        print()
+    def ICMPEchoReplyReceive(self, icmpEchoReply: ICMPEchoReply) -> int:
+        print()
 
     def ARPReplyReceive(self, arpReply: ARPReply):
         broadcastNodes = Rede.dicionarioDeRedes[arpReply.tell.redeIPInBinaryStr]
         ip = "" 
+        
+        # Tell tem que ser tipo NODO para poder printar nomde do nodo.
+        print(f"{arpReply.who.ipStr} --> {arpReply.tell.ipStr} : ARP Reply<br/>{arpReply.tell.ipStr} is at {arpReply.tellersMac}")
         for node in broadcastNodes:
             if isinstance(node, Nodo.Nodo):
                 ip = node.ip.ipStr
@@ -50,17 +59,19 @@ class Rede:
                     #no reply, tellersMac eh string, nao tipo MAC.
                     node.arpTable[arpReply.tell.ipStr] = arpReply.tellersMac
             elif isinstance(node, Router.Router):
-                print(node.ports, arpReply.who.ipStr)
+                # print(node.ports, arpReply.who.ipStr)
                 if arpReply.who.ipStr in node.ports:
                     node.arpTable[arpReply.tell.ipStr] = arpReply.tellersMac
+        
 
     def ARPRequestReceive(self, arpRequest: ARPRequest): #esse nodo RECEBEU DA REDE um ARPRequest
         #Check se who e tell estao na mesma rede
         #Se estao na rede diferente, mudo o who para roteador.
-        if arpRequest.who.redeIPInBinaryStr != arpRequest.tell.redeIPInBinaryStr:
-            newWho = arpRequest.tell.ipStr[:-1] + "1"
-            arpRequest.who = IP(newWho, arpRequest.tell.maskStr)
+        # if arpRequest.who.redeIPInBinaryStr != arpRequest.tell.redeIPInBinaryStr:
+        #     newWho = arpRequest.tell.ipStr[:-1] + "1"
+        #     arpRequest.who = IP(newWho, arpRequest.tell.maskStr)
 
+        # Tell tem que ser tipo NODO para poder printar nomde do nodo.
         print(f"Note over {arpRequest.tell.ipStr} : ARP Request<br/>Who has {arpRequest.who.ipStr}? Tell {arpRequest.tell.ipStr}")
 
         broadcastNodes = Rede.dicionarioDeRedes[arpRequest.tell.redeIPInBinaryStr]
@@ -74,7 +85,7 @@ class Rede:
                     arpReply = ARPReply(arpRequest.tell, arpRequest.who, tellersMac)
                     self.ARPReplyReceive(arpReply)
             elif isinstance(node, Router.Router):
-                print(node.ports, arpRequest.who.ipStr)
+                # print(node.ports, arpRequest.who.ipStr)
                 if arpRequest.who.ipStr in node.ports:
                     node.arpTable[arpRequest.tell.ipStr] = arpRequest.tellersMac
                     tellersMac = node.ports[arpRequest.who.ipStr]

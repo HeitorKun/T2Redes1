@@ -29,7 +29,7 @@ class Reader:
             ipMaskStr = x[2][-2:]
             ip = IP(ipStr, ipMaskStr)
 
-            gateway = x[3]
+            gateway = IP(x[3], ipMaskStr)
 
             node = Nodo(name, ip, mac, gateway)
             self.nodes.append(node)
