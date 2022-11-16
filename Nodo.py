@@ -19,7 +19,6 @@ class Nodo(NetworkEntity):
             self.ARPReplyReceive(protocol)
         elif isinstance(protocol, ARPRequest): 
             self.ARPRequestReceive(protocol)
-
     def isMyIP(self, ip:IP.IP) -> bool:
         return self.ip == ip
 
