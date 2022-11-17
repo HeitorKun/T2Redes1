@@ -46,18 +46,18 @@ class Rede:
             return 99
         else:
             nodes = Rede.dicionarioDeRedes[icmpEchoRequest.nextNode.redeIPInBinaryStr]
+            print(f"{icmpEchoRequest.currentNode.ipStr} ->> {icmpEchoRequest.nextNode.ipStr} : ICMP Echo Request<br/>src={icmpEchoRequest.src.ipStr} dst={icmpEchoRequest.dst.ipStr} ttl={icmpEchoRequest.ttl}")
             for node in nodes:
                 if isinstance(node, Nodo.Nodo):
                     ip = node.ip.ipStr
                     if icmpEchoRequest.nextNode.ipStr == ip and icmpEchoRequest.dst.ipStr == ip:
-                        return 0
-                    if icmpEchoRequest.nextNode.ipStr == ip:
-                        
-                        return 1
+                        print()
+                        # return icmpReply()
                 elif isinstance(node, Router.Router):
+                    return icmpEchoRequest.ttl - 1
                     # print(node.ports, arpReply.who.ipStr)
-                    if arpReply.who.ipStr in node.ports:
-                        node.arpTable[arpReply.tell.ipStr] = arpReply.tellersMac
+                    # if arpReply.who.ipStr in node.ports:
+                    #     node.arpTable[arpReply.tell.ipStr] = arpReply.tellersMac
         
     def ICMPEchoReplyReceive(self, icmpEchoReply: ICMPEchoReply) -> int:
         print()
