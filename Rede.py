@@ -66,8 +66,7 @@ class Rede:
         broadcastNodes = Rede.dicionarioDeRedes[arpReply.tell.redeIPInBinaryStr]
         ip = "" 
         
-        # Tell tem que ser tipo NODO para poder printar nomde do nodo.
-        print(f"{arpReply.who.ipStr} --> {arpReply.tell.ipStr} : ARP Reply<br/>{arpReply.tell.ipStr} is at {arpReply.tellersMac}")
+        print(f"{arpReply.tell.ipStr} --> {arpReply.who.ipStr} : ARP Reply<br/>{arpReply.tell.ipStr} is at {arpReply.tellersMac}")
         for node in broadcastNodes:
             if isinstance(node, Nodo.Nodo):
                 ip = node.ip.ipStr
@@ -75,19 +74,11 @@ class Rede:
                     #no reply, tellersMac eh string, nao tipo MAC.
                     node.arpTable[arpReply.tell.ipStr] = arpReply.tellersMac
             elif isinstance(node, Router.Router):
-                # print(node.ports, arpReply.who.ipStr)
                 if arpReply.who.ipStr in node.ports:
                     node.arpTable[arpReply.tell.ipStr] = arpReply.tellersMac
         
 
     def ARPRequestReceive(self, arpRequest: ARPRequest): #esse nodo RECEBEU DA REDE um ARPRequest
-        #Check se who e tell estao na mesma rede
-        #Se estao na rede diferente, mudo o who para roteador.
-        # if arpRequest.who.redeIPInBinaryStr != arpRequest.tell.redeIPInBinaryStr:
-        #     newWho = arpRequest.tell.ipStr[:-1] + "1"
-        #     arpRequest.who = IP(newWho, arpRequest.tell.maskStr)
-
-        # Tell tem que ser tipo NODO para poder printar nomde do nodo.
         print(f"Note over {arpRequest.tell.ipStr} : ARP Request<br/>Who has {arpRequest.who.ipStr}? Tell {arpRequest.tell.ipStr}")
 
         broadcastNodes = Rede.dicionarioDeRedes[arpRequest.tell.redeIPInBinaryStr]
@@ -96,23 +87,15 @@ class Rede:
             if isinstance(node, Nodo.Nodo):
                 ip = node.ip.ipStr
                 if arpRequest.who.ipStr == ip:
-                    node.arpTable[arpRequest.tell.ipStr] = arpRequest.tellersMac.macStr
+                    node.arpTable[arpRequest.tell.ipStr] = arpRequest.tellersMac
                     tellersMac = node.mac.macStr
                     arpReply = ARPReply(arpRequest.tell, arpRequest.who, tellersMac)
                     self.ARPReplyReceive(arpReply)
             elif isinstance(node, Router.Router):
-                # print(node.ports, arpRequest.who.ipStr)
                 if arpRequest.who.ipStr in node.ports:
                     node.arpTable[arpRequest.tell.ipStr] = arpRequest.tellersMac
                     tellersMac = node.ports[arpRequest.who.ipStr]
                     arpReply = ARPReply(arpRequest.tell, arpRequest.who, tellersMac)
                     self.ARPReplyReceive(arpReply)
-
-        # if arpRequest.who.ipStr == self.ip: # if its me then send arp reply
-        #     # save his mac on arpTable
-        #     self.arpTable[arpRequest.tell] = arpRequest.tellersMac
-        #     # send reply
-        #     arpReply = ARPReply(arpRequest.who, arpRequest.tell, self.mac)
-        #     Nodo.rede.enviaNaRede(arpReply)
 
 redeGlobal = Rede()

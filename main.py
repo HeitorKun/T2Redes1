@@ -4,9 +4,7 @@ from ICMP import ICMPEchoRequest
 from IP import IP
 from Nodo import Nodo
 from Router import Router
-# n1 = Nodo(ip = 123, mac = 234)
 
-# n1.executaProtocoloDeRede(ARP(IP("12.12.3.123",12), n1.ip, "request"))
 input = list(map(str, input().split()))
 nome_arquivo_topologia = input[1]
 
@@ -14,7 +12,6 @@ reader = Reader()
 reader.read(nome_arquivo_topologia)
 
 if input[2] == "ping":
-  print("ping execution to be prepared")
   src = reader.nodes[0]
   dst = reader.nodes[3]
 
@@ -30,15 +27,12 @@ if input[2] == "ping":
       
       icmpRequest = ICMPEchoRequest(current_node.ip, next_node.ip, current_node.mac, src.ip, dst.ip, ttl)
       if rede.ICMPEchoRequestReceive(icmpRequest) == 99:
-        print(" error time exceeded")
+        # time exceeded
         go = False
       elif rede.ICMPEchoRequestReceive(icmpRequest) == 0:
-        print(" ping done")
         go = False
       else:
         current_node = next_node
-        # next_node = 
-        print(" deu certo")
       go = False
     #Se current_node tem mac do gateway(roteador) pode mandar ICMP request
     elif current_node.gateway.ipStr in current_node.arpTable and gateway:
@@ -53,11 +47,11 @@ if input[2] == "ping":
               rtIp = rt.net_dest[:-2]
               if  rtIp == dst.ip.ipStr[:-2]:
                 if rt.nexthop == "0.0.0.0":
-                  current_node = Nodo("", IP(rtIp+".1", ""), )
-                
-
-        # current_node = Nodo(name, ip, mac, gateway)
-      go = False
+                  ip = rtIp+".1"
+                  mac = r.ports[ip]
+                  current_node = Nodo(r.name, IP(ip, str(r.mask)), mac, current_node.gateway)
+                  go = False
+                  
     #Se current_node nao tem mac do next_node ainda, tem que mandar ARP request
     else:
       # Se who esta na outra rede que o tell
@@ -80,11 +74,3 @@ elif input[2] == "traceroute":
 else:
   print("please inform ping or traceroute command")
   exit(0)
-
-
-
-# print(reader.rede.dicionarioDeRedes)
-# for key in reader.rede.dicionarioDeRedes.keys():
-#   print("key: ", key, reader.rede.dicionarioDeRedes[key])
-# arpRequest = ARPRequest(src.ip, dst.ip, src.mac)
-# reader.nodes[0].arpRequest()

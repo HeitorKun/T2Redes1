@@ -1,7 +1,3 @@
-# class ICMPEchoRequest:
-#     def __init__(self):
-#         pass
-
 from IP import IP
 from MAC import MAC
 
